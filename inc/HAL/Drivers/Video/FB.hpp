@@ -14,6 +14,7 @@ namespace System
                     void SetPixel(uint32_t x, uint32_t y, uint32_t color);
                     void Clear();
                     void Clear(uint32_t color);
+                    void Update();
                 private:
                     uint32_t* buffer;
                     uint32_t  width;

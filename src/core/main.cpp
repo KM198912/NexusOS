@@ -33,6 +33,7 @@ namespace System
         void Run()
         {
             VESA.Clear((uint32_t)Color::DarkCyan);
+            VESA.Update();
         }
     }
  }

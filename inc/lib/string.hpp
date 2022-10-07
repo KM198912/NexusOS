@@ -1,7 +1,7 @@
 #pragma once
 #include <stdint.h>
 #include <stddef.h>
-
+#include <stdarg.h>
 static inline void memset(void* ptr, uint8_t value, size_t num)
 {
     uint8_t* p = (uint8_t*)ptr;
@@ -156,4 +156,117 @@ static inline char* strrchr(char* str, int character)
         str++;
     }
     return last;
+}
+static inline int vsprintf(char* buffer, const char* format, va_list args)
+{
+    int written = 0;
+    while (*format != '\0')
+    {
+        size_t maxrem = INT32_MAX - written;
+        if (format[0] != '%' || format[1] == '%')
+        {
+            if (format[0] == '%')
+            {
+                format++;
+            }
+            size_t amount = 1;
+            while (format[amount] && format[amount] != '%')
+            {
+                amount++;
+            }
+            if (maxrem < amount)
+            {
+                return -1;
+            }
+            for (size_t i = 0; i < amount; i++)
+            {
+                buffer[written] = format[i];
+                written++;
+            }
+            format += amount;
+            continue;
+        }
+        const char* format_begun_at = format++;
+        if (*format == 'c')
+        {
+            format++;
+            char c = (char)va_arg(args, int);
+            if (!maxrem)
+            {
+                return -1;
+            }
+            buffer[written] = c;
+            written++;
+        }
+        else if (*format == 's')
+        {
+            format++;
+            const char* str = va_arg(args, const char*);
+            size_t len = strlen(str);
+            if (maxrem < len)
+            {
+                return -1;
+            }
+            memcpy(buffer + written, str, len);
+            written += len;
+        }
+        else if (*format == 'd')
+        {
+            format++;
+            int i = va_arg(args, int);
+            if (i == 0)
+            {
+                if (maxrem < 1)
+                {
+                    return -1;
+                }
+                buffer[written] = '0';
+                written++;
+            }
+            else
+            {
+                bool negative = false;
+                if (i < 0)
+                {
+                    negative = true;
+                    i = -i;
+                }
+                char a[32];
+                int j = 0;
+                while (i > 0)
+                {
+                    int rem = i % 10;
+                    a[j] = rem + '0';
+                    j++;
+                    i /= 10;
+                }
+                if (negative)
+                {
+                    if (maxrem < 1)
+                    {
+                        return -1;
+                    }
+                    buffer[written] = '-';
+                    written++;
+                }
+                for (int k = j - 1; k >= 0; k--)
+                {
+                    if (maxrem < 1)
+                    {
+                        return -1;
+                    }
+                    buffer[written] = a[k];
+                    written++;
+                }
+            }
+        }
+    }
+}
+static inline int sprintf(char* buffer, const char* format, ...)
+{
+    va_list args;
+    va_start(args, format);
+    int res = vsprintf(buffer, format, args);
+    va_end(args);
+    return res;
 }

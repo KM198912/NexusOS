@@ -3,11 +3,11 @@ namespace System
 {
     namespace Memory
     {
-        void MM::Initialize()
+        void MM::Initialize(void* end)
         {
-            start = (void*)0x100000;
-            end = (void*)0x1000000;
+            start = (void*)end;
             current = start;
+            end = (void*)0xFFFFFFFF;
         }
         void* MM::Allocate(size_t size)
         {

@@ -8,7 +8,7 @@ namespace System
         class MM
         {
             public:
-                void Initialize();
+                void Initialize(void* end);
                 void* Allocate(size_t size);
                 void Free(void* ptr);
             private:

@@ -2,7 +2,7 @@
 #include <common/multiboot.h>
 namespace System
 {
-    namespace Multiboot
+    namespace Multiboots
     {
         class Manager
         {

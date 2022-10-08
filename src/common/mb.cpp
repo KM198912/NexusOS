@@ -2,7 +2,7 @@
 
 namespace System
 {
-    namespace Multiboot
+    namespace Multiboots
     {
         void Manager::Copy(multiboot_info_t* mbb)
         {

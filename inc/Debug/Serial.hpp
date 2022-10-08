@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stddef.h>
 #include <stdarg.h>
+#include <lib/colors.hpp>
 #define SERIAL_PORT 0x3F8
 namespace System
 {
@@ -13,9 +14,14 @@ namespace System
                 void Initialize();
                 void Write(const char* str);
                 void Printf(const char* str, ...);
+                void WriteChar(char c);
             private:
                 int IsTransMitEmpty();
-                void WriteChar(char c);
+                
         };
     }
+}
+extern "C" {
+    void perror(const char* str,...);
+    void printf(const char* str,...);
 }

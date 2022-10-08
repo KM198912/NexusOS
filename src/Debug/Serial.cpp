@@ -23,13 +23,11 @@ namespace System
                 WriteChar(str[i]);
             }
         }
-        void Serial::Printf(const char* str, ...)
+        void Serial::Printf(const char* fmt, ...)
         {
             va_list args;
-            va_start(args, str);
-            char* buffer = (char*)System::Kernel::MM.Allocate(1024);
-            vsprintf(buffer, str, args);
-            Write(buffer);
+            va_start(args, fmt);
+            serial_vsprintf(fmt, args);
             va_end(args);
         }
         int Serial::IsTransMitEmpty()
@@ -43,5 +41,24 @@ namespace System
         }
         
 
+    }
+}
+extern "C" {
+    void perror(const char* fmt,...)
+    {
+        //we dont want to use memory for this, just the stack
+    va_list args;
+    va_start(args, fmt);
+    serial_vsprintf(fmt, args);
+    va_end(args);
+        for(;;) asm volatile("cli;hlt");
+    }
+    void printf(const char* fmt,...)
+    {
+        //we dont want to use memory for this, just the stack
+    va_list args;
+    va_start(args, fmt);
+    serial_vsprintf(fmt, args);
+    va_end(args);
     }
 }

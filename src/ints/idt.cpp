@@ -250,12 +250,12 @@ __cdecl void interrupt_handler(idt::regs32_t regs)
 
 void idt::manager_t::enable_interrupts()
 {
-	printf("enable_interrupts() >> interrupts enabled\n");
+	printf("%s enable_interrupts() >> interrupts enabled\n",DEBUG_OK);
 	asm volatile("sti");
 }
 void idt::manager_t::disable_interrupts()
 {
-	System::Kernel::serial.Printf("disable_interrupts() >> interrupts disabled\n");
+	printf("%s disable_interrupts() >> interrupts disabled\n",DEBUG_OK);
 	asm volatile("cli");
 }
 bool idt::manager_t::state()

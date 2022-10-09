@@ -1,6 +1,6 @@
 CXX=i686-elf-g++
 LD=i686-elf-gcc
-CXXFLAGS=-Iinc -m32 -fno-use-cxa-atexit -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -Wno-write-strings -Wno-unused-variable -w -Wno-narrowing -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-missing-field-initializers
+CXXFLAGS=-Iinc -fno-use-cxa-atexit -ffreestanding -O2 -Wall -Wextra -fno-exceptions -fno-rtti -Wno-write-strings -Wno-unused-variable -w -Wno-narrowing -Wno-sign-compare -Wno-type-limits -Wno-unused-parameter -Wno-missing-field-initializers
 NASM=nasm
 ASFLAGS=-felf32
 SOURCES=$(shell find . -name '*.cpp' -not -path './boot/*')
@@ -17,7 +17,7 @@ as:
 	nasm -felf32 'asm/idt_asm.asm' -o 'asm/idt_asm.o'
 
 link:
-	$(LD) -w -T 'linker.ld' -o 'kernel.bin' -ffreestanding -O2 -nostdlib boot/boot.a $(LINK_SOURCES) -m32
+	$(LD) -w -T 'linker.ld' -o 'kernel.bin' -ffreestanding -O2 -nostdlib boot/boot.a $(LINK_SOURCES) -lgcc
 	strip kernel.bin
 
 clean:

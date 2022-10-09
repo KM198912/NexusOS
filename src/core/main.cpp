@@ -48,10 +48,6 @@ namespace System
         {
             term.Clear();
             term.Printf("Welcome to the kernel!\n");
-            int i = 0;
-            int a = 1;
-            int panic = a/i;
-            term.Printf("Panic: %d",panic);
             
         }
         void Run()

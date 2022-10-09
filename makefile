@@ -40,4 +40,4 @@ run-monitor:
 	qemu-system-i386 -cdrom NexusOS.iso -m 512  -vga std -monitor stdio -enable-kvm
 
 run-bochs:
-	bochs -q -f .bochsrc 
+	bochs -q -f bochsrc.txt 
